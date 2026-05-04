@@ -26,8 +26,8 @@ service cloud.firestore {
 
     match /targets/{targetId} {
       allow get: if isAdmin() || (isSignedIn() && request.auth.uid == targetId);
-      // Allow any signed-in user (the operator) to list targets in this dev version
-      allow list: if isSignedIn();
+      // Restrict listing to admins only
+      allow list: if isAdmin();
       allow write: if (isSignedIn() && targetId == request.auth.uid && isValidTarget(request.resource.data)) || isAdmin();
       
       match /locations/{updateId} {
