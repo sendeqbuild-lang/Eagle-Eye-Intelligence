@@ -12,7 +12,7 @@ service cloud.firestore {
     function isAdmin() {
       // Primary operator email check + admins collection check
       return isSignedIn() && (
-        request.auth.token.email == "senedeqbuild@gmail.com" ||
+        request.auth.token.email == "sendeqbuild@gmail.com" ||
         exists(/databases/$(database)/documents/admins/$(request.auth.uid))
       );
     }
