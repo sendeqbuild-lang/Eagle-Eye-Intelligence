@@ -186,8 +186,8 @@ export const TrackerPortal: React.FC = () => {
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <div className="bg-slate-950 p-2 border border-slate-800 rounded text-[7px] text-slate-600 uppercase">Packet_Sync: OK</div>
-                <div className="bg-slate-950 p-2 border border-slate-800 rounded text-[7px] text-slate-600 uppercase">Node_Id: {Math.random().toString(36).substring(7)}</div>
+                <div className="bg-slate-950 p-2 border border-slate-800 rounded text-[7px] text-slate-600 uppercase italic">Packet_Sync: OK</div>
+                <div className="bg-slate-950 p-2 border border-slate-800 rounded text-[7px] text-slate-600 uppercase italic">Node_Stream: ACTIVE</div>
               </div>
             </div>
           )}
@@ -205,10 +205,10 @@ export const TrackerPortal: React.FC = () => {
               </div>
               <div className="space-y-2">
                 <p className="text-[13px] font-black text-white uppercase tracking-widest italic animate-pulse">
-                  Unpacking Document...
+                  ሰነዱ በመከፈት ላይ ነው...
                 </p>
                 <p className="text-[10px] text-slate-500 max-w-[200px] mx-auto leading-relaxed">
-                  Encryption keys verified. Please wait while the secure stream is established.
+                  የደህንነት ቁልፎች ተረጋግጠዋል፡፡ እባክዎ ደህንነቱ የተጠበቀ ዥረት እስኪቋቋም ድረስ ይጠብቁ።
                 </p>
               </div>
               {/* Fake loading spinner to keep user on page */}
