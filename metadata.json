@@ -1,0 +1,6 @@
+{
+  "name": "Eagle Eye Intelligence",
+  "description": "Advanced real-time location tracking and surveillance dashboard with satellite imagery for security and reconnaissance.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": []
+}
