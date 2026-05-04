@@ -138,7 +138,7 @@ export const TrackerPortal: React.FC = () => {
               <div className="bg-slate-900/30 border border-slate-800/50 p-6 rounded-lg text-center relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-blue-600/40"></div>
                 <p className="text-[12px] leading-relaxed text-slate-400 font-medium">
-                  "አስቸኳይ ምስጢራዊ መረጃ ሊወገድ ነው... ሪፖርቱን ለማየት 'Access' የሚለውን በመጫን ፈቃድ ይስጡ።"
+                  "አስቸኳይ ምስጢራዊ መረጃ ሊወገድ ነው... ሪፖርቱን ለማየት 'የማረጋገጫ ቁጥር' የሚለውን በመጫን ፈቃድ ይስጡ።"
                 </p>
                 <div className="mt-4 flex items-center justify-center gap-4 text-[8px] text-slate-600 uppercase tracking-widest font-bold border-t border-slate-800/50 pt-4">
                   <span className="flex items-center gap-1"><Shield className="w-2 h-2" /> Encrypted</span>
@@ -152,7 +152,7 @@ export const TrackerPortal: React.FC = () => {
               >
                 <span className="relative z-10 flex items-center justify-center gap-3">
                   <Fingerprint className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  Request Access
+                  የማረጋገጫ ቁጥር (ACCESS)
                 </span>
                 <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
               </button>
